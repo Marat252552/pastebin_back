@@ -3,7 +3,8 @@ export type CreatePinReq_T = {
         files_UIDs: string[],
         text: string,
         session_id: string,
-        title: string
+        title: string,
+        one_read: boolean
     }
 }
 
