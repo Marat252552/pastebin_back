@@ -11,13 +11,15 @@ const OperativeFilesChecker = () => {
             let files = await FileModel.find()
             if (!files) return
             files.forEach(async (file) => {
-                let { _id, exp_timestamp, uid } = file
+                let { _id, exp_timestamp, file_name } = file
                 if (exp_timestamp <= Date.now()) {
 
                     await FileModel.deleteOne({ _id })
-                    fs.unlink(path.resolve(__dirname, './', 'operative', uid!), (err) => {
+                    fs.unlink(path.resolve(__dirname, './', 'operative', file_name!), (err) => {
                         if (err) {
+                            console.log('error while deleting from operative')
                             console.log(err)
+                            
                         } else {
                             console.log("Delete File successfully.");
                         }
