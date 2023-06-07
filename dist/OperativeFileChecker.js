@@ -24,11 +24,12 @@ const OperativeFilesChecker = () => {
             if (!files)
                 return;
             files.forEach((file) => __awaiter(void 0, void 0, void 0, function* () {
-                let { _id, exp_timestamp, uid } = file;
+                let { _id, exp_timestamp, file_name } = file;
                 if (exp_timestamp <= Date.now()) {
                     yield FileModel_1.default.deleteOne({ _id });
-                    fs_1.default.unlink(path_1.default.resolve(__dirname, './', 'operative', uid), (err) => {
+                    fs_1.default.unlink(path_1.default.resolve(__dirname, './', 'operative', file_name), (err) => {
                         if (err) {
+                            console.log('error while deleting from operative');
                             console.log(err);
                         }
                         else {
