@@ -3,43 +3,36 @@ import PinModel from "../../database/Models/PinModel"
 import { CreatePinReq_T, GetPinReq_T } from "./types"
 import FileModel from "../../database/Models/FileModel"
 import fs from 'fs'
+import { UploadImage } from "../../yandex_files/Actions"
+import { UploadFile_T } from "../../shared/types"
 
 
 class Controller {
     async createPin(req: CreatePinReq_T, res: any) {
         try {
             const {files_UIDs, text, session_id, title, one_read} = req.body
-            if(!text || !title || title.length > 19 || !session_id) {
+            if(!text || !title || title.length > 20 || text.length > 200 || !session_id) {
                 return res.sendStatus(400)
             }
 
             let files = await FileModel.find({session_id})
 
-            let images_names: string[] = []
+            let images_links: string[] = []
 
             if(files[0]) {
-                files.forEach(file => {
-                    let {uid} = file
-                    let new_file_name = uid + '.' + file.mimetype.split('/')[1]
+                for await(const file of files) {
+                    let {file_name, uid} = file
     
                     // checking whether this file exists
-                    if(!files_UIDs.find(el => el === uid)) return
-    
-                    let newPath = path.resolve(__dirname, './../../', 'static', new_file_name)
-                    let oldPath = path.resolve(__dirname, './../../', 'operative', uid)
-                    fs.rename(oldPath, newPath, function (err) {
-                        if (err) {
-                            console.log(err)
-                        }
-                        console.log('Successfully renamed - AKA moved!')
-                    })
-                    images_names.push(new_file_name)
-                })
-            }
+                    if(files_UIDs.find(el => el === uid)) {
+                        let uploadInfo: UploadFile_T = await UploadImage(file_name)
 
-            
+                        images_links.push(uploadInfo.Location)
+                    }
+                }
+            }          
 
-            let pin = await PinModel.create({images_names, text, title, one_read})
+            let pin = await PinModel.create({images_links, text, title, one_read})
 
             let link = process.env.FRONT_URL + '/view/' + pin._id
 

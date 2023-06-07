@@ -8,43 +8,54 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __asyncValues = (this && this.__asyncValues) || function (o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const path_1 = __importDefault(require("path"));
 const PinModel_1 = __importDefault(require("../../database/Models/PinModel"));
 const FileModel_1 = __importDefault(require("../../database/Models/FileModel"));
-const fs_1 = __importDefault(require("fs"));
+const Actions_1 = require("../../yandex_files/Actions");
 class Controller {
     createPin(req, res) {
+        var _a, e_1, _b, _c;
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { files_UIDs, text, session_id, title, one_read } = req.body;
-                if (!text || !title || title.length > 19 || !session_id) {
+                if (!text || !title || title.length > 20 || text.length > 200 || !session_id) {
                     return res.sendStatus(400);
                 }
                 let files = yield FileModel_1.default.find({ session_id });
-                let images_names = [];
+                let images_links = [];
                 if (files[0]) {
-                    files.forEach(file => {
-                        let { uid } = file;
-                        let new_file_name = uid + '.' + file.mimetype.split('/')[1];
-                        // checking whether this file exists
-                        if (!files_UIDs.find(el => el === uid))
-                            return;
-                        let newPath = path_1.default.resolve(__dirname, './../../', 'static', new_file_name);
-                        let oldPath = path_1.default.resolve(__dirname, './../../', 'operative', uid);
-                        fs_1.default.rename(oldPath, newPath, function (err) {
-                            if (err) {
-                                console.log(err);
+                    try {
+                        for (var _d = true, files_1 = __asyncValues(files), files_1_1; files_1_1 = yield files_1.next(), _a = files_1_1.done, !_a; _d = true) {
+                            _c = files_1_1.value;
+                            _d = false;
+                            const file = _c;
+                            let { file_name, uid } = file;
+                            // checking whether this file exists
+                            if (files_UIDs.find(el => el === uid)) {
+                                let uploadInfo = yield (0, Actions_1.UploadImage)(file_name);
+                                images_links.push(uploadInfo.Location);
                             }
-                            console.log('Successfully renamed - AKA moved!');
-                        });
-                        images_names.push(new_file_name);
-                    });
+                        }
+                    }
+                    catch (e_1_1) { e_1 = { error: e_1_1 }; }
+                    finally {
+                        try {
+                            if (!_d && !_a && (_b = files_1.return)) yield _b.call(files_1);
+                        }
+                        finally { if (e_1) throw e_1.error; }
+                    }
                 }
-                let pin = yield PinModel_1.default.create({ images_names, text, title, one_read });
+                let pin = yield PinModel_1.default.create({ images_links, text, title, one_read });
                 let link = process.env.FRONT_URL + '/view/' + pin._id;
                 res.status(200).json({ link, pin_id: pin._id });
             }
