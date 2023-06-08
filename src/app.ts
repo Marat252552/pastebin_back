@@ -7,6 +7,7 @@ import bodyParser from 'body-parser'
 import OperativeFilesChecker from './OperativeFileChecker'
 import GetPinsRouter from './routes/PinRouter/GetPinsRouter'
 import path from 'path'
+import AutoPinsDeleter from './AutoPinsDeleter'
 
 
 export const upload = multer({dest: 'uploads/'})
@@ -32,5 +33,6 @@ app.use(express.static(path.resolve(__dirname, 'static')))
 
 
 OperativeFilesChecker()
+AutoPinsDeleter()
 
 export default app

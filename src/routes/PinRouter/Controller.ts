@@ -1,9 +1,9 @@
 import path from "path"
 import PinModel from "../../database/Models/PinModel"
 import { CreatePinReq_T, GetPinReq_T } from "./types"
-import FileModel from "../../database/Models/FileModel"
+import OperativeFileModel from "../../database/Models/OperativeFile"
 import fs from 'fs'
-import { UploadImage } from "../../yandex_files/Actions"
+import { DeleteFile, UploadImage } from "../../yandex_files/Actions"
 import { UploadFile_T } from "../../shared/types"
 
 
@@ -15,9 +15,9 @@ class Controller {
                 return res.sendStatus(400)
             }
 
-            let files = await FileModel.find({session_id})
+            let files = await OperativeFileModel.find({session_id})
 
-            let images_links: string[] = []
+            let images = []
 
             if(files[0]) {
                 for await(const file of files) {
@@ -25,14 +25,16 @@ class Controller {
     
                     // checking whether this file exists
                     if(files_UIDs.find(el => el === uid)) {
-                        let uploadInfo: UploadFile_T = await UploadImage(file_name)
+                        let {key, Location}: UploadFile_T = await UploadImage(file_name)
 
-                        images_links.push(uploadInfo.Location)
+                        let image = {file_name, key, link: Location}
+
+                        images.push(image)
                     }
                 }
             }          
 
-            let pin = await PinModel.create({images_links, text, title, one_read})
+            let pin = await PinModel.create({images, text, title, one_read})
 
             let link = process.env.FRONT_URL + '/view/' + pin._id
 
@@ -51,21 +53,19 @@ class Controller {
 
             if(!pin) return res.sendStatus(404)
 
-            if(pin.one_read) {
-                await PinModel.deleteOne({_id})
-                // pin.images_names.forEach(image_name => {
-                //     fs.unlink(path.resolve(__dirname, './../../', 'static', image_name!), (err) => {
-                //         if (err) {
-                //             console.log(err)
-                //         } else {
-                //             console.log("Delete File successfully.");
-                //         }
-                //     });
-                // })
-            }
-            
 
-            res.status(200).json({pin})
+            if(pin.one_read && pin.views >= 1) {
+                await PinModel.deleteOne({_id})
+                
+                for await(const image of pin.images) {
+                    await DeleteFile(image.key)
+                }
+
+                res.sendStatus(404)
+            } else {
+                await PinModel.addView(_id)
+                res.status(200).json({pin})
+            }
 
         } catch(e) {
             console.log(e)

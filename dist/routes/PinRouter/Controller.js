@@ -20,7 +20,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const PinModel_1 = __importDefault(require("../../database/Models/PinModel"));
-const FileModel_1 = __importDefault(require("../../database/Models/FileModel"));
+const OperativeFile_1 = __importDefault(require("../../database/Models/OperativeFile"));
 const Actions_1 = require("../../yandex_files/Actions");
 class Controller {
     createPin(req, res) {
@@ -31,8 +31,8 @@ class Controller {
                 if (!text || !title || title.length > 20 || text.length > 200 || !session_id) {
                     return res.sendStatus(400);
                 }
-                let files = yield FileModel_1.default.find({ session_id });
-                let images_links = [];
+                let files = yield OperativeFile_1.default.find({ session_id });
+                let images = [];
                 if (files[0]) {
                     try {
                         for (var _d = true, files_1 = __asyncValues(files), files_1_1; files_1_1 = yield files_1.next(), _a = files_1_1.done, !_a; _d = true) {
@@ -42,8 +42,9 @@ class Controller {
                             let { file_name, uid } = file;
                             // checking whether this file exists
                             if (files_UIDs.find(el => el === uid)) {
-                                let uploadInfo = yield (0, Actions_1.UploadImage)(file_name);
-                                images_links.push(uploadInfo.Location);
+                                let { key, Location } = yield (0, Actions_1.UploadImage)(file_name);
+                                let image = { file_name, key, link: Location };
+                                images.push(image);
                             }
                         }
                     }
@@ -55,7 +56,7 @@ class Controller {
                         finally { if (e_1) throw e_1.error; }
                     }
                 }
-                let pin = yield PinModel_1.default.create({ images_links, text, title, one_read });
+                let pin = yield PinModel_1.default.create({ images, text, title, one_read });
                 let link = process.env.FRONT_URL + '/view/' + pin._id;
                 res.status(200).json({ link, pin_id: pin._id });
             }
@@ -66,25 +67,36 @@ class Controller {
         });
     }
     getPin(req, res) {
+        var _a, e_2, _b, _c;
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let { _id } = req.params;
                 let pin = yield PinModel_1.default.findOne({ _id });
                 if (!pin)
                     return res.sendStatus(404);
-                if (pin.one_read) {
+                if (pin.one_read && pin.views >= 1) {
                     yield PinModel_1.default.deleteOne({ _id });
-                    // pin.images_names.forEach(image_name => {
-                    //     fs.unlink(path.resolve(__dirname, './../../', 'static', image_name!), (err) => {
-                    //         if (err) {
-                    //             console.log(err)
-                    //         } else {
-                    //             console.log("Delete File successfully.");
-                    //         }
-                    //     });
-                    // })
+                    try {
+                        for (var _d = true, _e = __asyncValues(pin.images), _f; _f = yield _e.next(), _a = _f.done, !_a; _d = true) {
+                            _c = _f.value;
+                            _d = false;
+                            const image = _c;
+                            yield (0, Actions_1.DeleteFile)(image.key);
+                        }
+                    }
+                    catch (e_2_1) { e_2 = { error: e_2_1 }; }
+                    finally {
+                        try {
+                            if (!_d && !_a && (_b = _e.return)) yield _b.call(_e);
+                        }
+                        finally { if (e_2) throw e_2.error; }
+                    }
+                    res.sendStatus(404);
                 }
-                res.status(200).json({ pin });
+                else {
+                    yield PinModel_1.default.addView(_id);
+                    res.status(200).json({ pin });
+                }
             }
             catch (e) {
                 console.log(e);
