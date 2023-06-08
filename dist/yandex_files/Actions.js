@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UploadImage = void 0;
+exports.DeleteFile = exports.UploadImage = void 0;
 const path_1 = __importDefault(require("path"));
 const YandexBucketInit_1 = __importDefault(require("./YandexBucketInit"));
 let UploadImage = (image_name) => __awaiter(void 0, void 0, void 0, function* () {
@@ -23,3 +23,7 @@ let UploadImage = (image_name) => __awaiter(void 0, void 0, void 0, function* ()
     return upload;
 });
 exports.UploadImage = UploadImage;
+let DeleteFile = (key) => {
+    return YandexBucketInit_1.default.Remove(key);
+};
+exports.DeleteFile = DeleteFile;

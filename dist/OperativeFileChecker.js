@@ -13,20 +13,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = __importDefault(require("path"));
-const FileModel_1 = __importDefault(require("./database/Models/FileModel"));
+const OperativeFile_1 = __importDefault(require("./database/Models/OperativeFile"));
 const fs_1 = __importDefault(require("fs"));
 let TEN_MINUTES = 600000;
 let TEN_SECONDS = 10000;
 const OperativeFilesChecker = () => {
     setInterval(() => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            let files = yield FileModel_1.default.find();
+            let files = yield OperativeFile_1.default.find();
             if (!files)
                 return;
             files.forEach((file) => __awaiter(void 0, void 0, void 0, function* () {
                 let { _id, exp_timestamp, file_name } = file;
                 if (exp_timestamp <= Date.now()) {
-                    yield FileModel_1.default.deleteOne({ _id });
+                    yield OperativeFile_1.default.deleteOne({ _id });
                     fs_1.default.unlink(path_1.default.resolve(__dirname, './', 'operative', file_name), (err) => {
                         if (err) {
                             console.log('error while deleting from operative');

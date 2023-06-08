@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = __importDefault(require("path"));
-const FileModel_1 = __importDefault(require("../../database/Models/FileModel"));
+const OperativeFile_1 = __importDefault(require("../../database/Models/OperativeFile"));
 class Controller {
     uploadFile(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -30,7 +30,7 @@ class Controller {
                 // Time in future when this file should be auto deleted if not used
                 let exp_timestamp = Date.now() + ONE_HOUR;
                 let file_name = uid + '.' + file.mimetype.split('/')[1];
-                yield FileModel_1.default.create({
+                yield OperativeFile_1.default.create({
                     file_name, exp_timestamp, session_id, uid
                 });
                 file.mv(path_1.default.resolve(__dirname, './../../', 'operative', file_name));

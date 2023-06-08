@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import PinModel from './Models/PinModel';
 
 let DBconnect = async () => {
     let login = process.env.MONGO_DB_LOGIN

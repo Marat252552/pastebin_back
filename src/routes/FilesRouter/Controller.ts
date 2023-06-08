@@ -1,5 +1,5 @@
 import path from "path"
-import FileModel from "../../database/Models/FileModel"
+import FileModel from "../../database/Models/OperativeFile"
 import { UploadFileReq_T } from "./types"
 
 

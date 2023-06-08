@@ -14,7 +14,7 @@ const start = () => {
     let PORT = process.env.PORT
     try {
         DBconnect()
-
+        
         app.listen(PORT, () => {
             console.log('server is running on port ' + PORT)
         })

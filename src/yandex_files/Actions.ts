@@ -12,3 +12,7 @@ export let UploadImage = async (image_name: string) => {
     );
     return upload
 }
+
+export let DeleteFile = (key: string) => {
+    return s3.Remove(key)
+}
