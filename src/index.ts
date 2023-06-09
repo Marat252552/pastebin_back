@@ -3,12 +3,7 @@ import app from './app'
 import DBconnect from './database/DBconnect'
 import path from "path";
 
-
-
-
-
 dotenv.config()
-
 
 const start = () => {
     let PORT = process.env.PORT
