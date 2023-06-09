@@ -23,7 +23,7 @@ class Controller {
                 for await(const file of files) {
                     let {file_name, uid} = file
     
-                    // checking whether this file exists
+                    // checking whether this file is required to be added
                     if(files_UIDs.find(el => el === uid)) {
                         let {key, Location}: UploadFile_T = await UploadImage(file_name)
 

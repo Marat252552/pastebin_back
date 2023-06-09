@@ -21,6 +21,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const PinModel_1 = __importDefault(require("./database/Models/PinModel"));
 const Actions_1 = require("./yandex_files/Actions");
+let TEN_MINUTES = 600000;
 const AutoPinsDeleter = () => {
     setInterval(() => __awaiter(void 0, void 0, void 0, function* () {
         var _a, e_1, _b, _c, _d, e_2, _e, _f, _g, e_3, _h, _j, _k, e_4, _l, _m;
@@ -63,7 +64,6 @@ const AutoPinsDeleter = () => {
                     _j = disposed_pins_1_1.value;
                     _q = false;
                     const disposed_pin = _j;
-                    disposed_pin;
                     let images = disposed_pin.images;
                     try {
                         for (var _r = true, images_2 = (e_4 = void 0, __asyncValues(images)), images_2_1; images_2_1 = yield images_2.next(), _k = images_2_1.done, !_k; _r = true) {
@@ -94,6 +94,6 @@ const AutoPinsDeleter = () => {
         catch (e) {
             console.log(e);
         }
-    }), 20000);
+    }), TEN_MINUTES);
 };
 exports.default = AutoPinsDeleter;

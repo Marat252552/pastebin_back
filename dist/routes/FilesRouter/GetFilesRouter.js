@@ -9,8 +9,6 @@ const express_fileupload_1 = __importDefault(require("express-fileupload"));
 const GetFilesRouter = () => {
     const router = (0, express_1.Router)();
     router.use((0, express_fileupload_1.default)({}));
-    // Добавляем middleware с названием файла
-    // router.post('/', upload.single('file'), Controller.connect)
     router.post('/', Controller_1.default.uploadFile);
     return router;
 };

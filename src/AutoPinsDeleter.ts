@@ -2,7 +2,7 @@ import PinModel from "./database/Models/PinModel"
 import { Pin_T } from "./shared/types"
 import { DeleteFile } from "./yandex_files/Actions"
 
-
+let TEN_MINUTES = 600000
 
 const AutoPinsDeleter = () => {
     setInterval(async () => {
@@ -19,7 +19,6 @@ const AutoPinsDeleter = () => {
 
             let disposed_pins = await PinModel.findDisposed()
             for await (const disposed_pin of disposed_pins) {
-                disposed_pin
                 let images = disposed_pin.images
                 for await (const image of images) {
                     await DeleteFile(image.key)
@@ -31,7 +30,7 @@ const AutoPinsDeleter = () => {
         } catch(e) {
             console.log(e)
         }
-    }, 20000)
+    }, TEN_MINUTES)
 }
 
 export default AutoPinsDeleter

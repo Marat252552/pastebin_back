@@ -40,7 +40,7 @@ class Controller {
                             _d = false;
                             const file = _c;
                             let { file_name, uid } = file;
-                            // checking whether this file exists
+                            // checking whether this file is required to be added
                             if (files_UIDs.find(el => el === uid)) {
                                 let { key, Location } = yield (0, Actions_1.UploadImage)(file_name);
                                 let image = { file_name, key, link: Location };
