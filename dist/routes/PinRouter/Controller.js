@@ -57,8 +57,11 @@ class Controller {
                     }
                 }
                 let pin = yield PinModel_1.default.create({ images, text, title, one_read });
-                let link = process.env.FRONT_URL + '/view/' + pin._id;
-                res.status(200).json({ link, pin_id: pin._id });
+                // let link = process.env.FRONT_URL + '/view/' + pin._id
+                res.status(200).json({
+                    // link,
+                    pin_id: pin._id
+                });
             }
             catch (e) {
                 console.log(e);
