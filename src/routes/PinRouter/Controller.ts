@@ -1,8 +1,6 @@
-import path from "path"
 import PinModel from "../../database/Models/PinModel"
 import { CreatePinReq_T, GetPinReq_T } from "./types"
 import OperativeFileModel from "../../database/Models/OperativeFile"
-import fs from 'fs'
 import { DeleteFile, UploadImage } from "../../yandex_files/Actions"
 import { UploadFile_T } from "../../shared/types"
 
@@ -36,9 +34,12 @@ class Controller {
 
             let pin = await PinModel.create({images, text, title, one_read})
 
-            let link = process.env.FRONT_URL + '/view/' + pin._id
+            // let link = process.env.FRONT_URL + '/view/' + pin._id
 
-            res.status(200).json({link, pin_id: pin._id})
+            res.status(200).json({
+                // link,
+                 pin_id: pin._id
+                })
 
         } catch(e) {
             console.log(e)
