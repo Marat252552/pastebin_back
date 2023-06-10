@@ -27,6 +27,7 @@ class Controller {
             file.mv(GetPathToOperativeFolder() + file_name)
 
             res.sendStatus(200)
+            
         } catch (e) {
             console.log(e)
             res.sendStatus(500)
