@@ -1,9 +1,7 @@
-import path from "path"
 import OperativeFileModel from "../DataFlow/database/Models/OperativeFile"
 import fs from 'fs'
-
-let TEN_MINUTES = 600000
-let TEN_SECONDS = 10000
+import GetPathToOperativeFolder from "../shared/GetPathToOperative"
+import { TEN_MINUTES } from "../shared/TimePeriods"
 
 const OperativeFilesChecker = () => {
     setInterval(async () => {
@@ -14,14 +12,17 @@ const OperativeFilesChecker = () => {
                 let { _id, exp_timestamp, file_name } = file
                 if (exp_timestamp <= Date.now()) {
 
-                    await OperativeFileModel.deleteOne({ _id })
-                    fs.unlink(path.resolve(__dirname, './', 'operative', file_name!), (err) => {
+                    fs.unlink(GetPathToOperativeFolder() + file_name, async (err) => {
                         if (err) {
                             console.log('error while deleting from operative')
                             console.log(err)
-                            
                         } else {
-                            console.log("Delete File successfully.");
+                            try {
+                                await OperativeFileModel.deleteOne({ _id })
+                                console.log('operative file deleted successfully')
+                            } catch(e) {
+                                console.log(e)
+                            }
                         }
                     });
                 }

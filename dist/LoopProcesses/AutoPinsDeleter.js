@@ -21,7 +21,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const PinModel_1 = __importDefault(require("../DataFlow/database/Models/PinModel"));
 const Actions_1 = require("../DataFlow/yandex_files/Actions");
-let TEN_MINUTES = 600000;
+const TimePeriods_1 = require("../shared/TimePeriods");
 const AutoPinsDeleter = () => {
     setInterval(() => __awaiter(void 0, void 0, void 0, function* () {
         var _a, e_1, _b, _c, _d, e_2, _e, _f, _g, e_3, _h, _j, _k, e_4, _l, _m;
@@ -92,8 +92,9 @@ const AutoPinsDeleter = () => {
             }
         }
         catch (e) {
+            console.log('AutoPinsDeleter Error');
             console.log(e);
         }
-    }), TEN_MINUTES);
+    }), TimePeriods_1.TEN_MINUTES);
 };
 exports.default = AutoPinsDeleter;

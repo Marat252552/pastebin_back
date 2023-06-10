@@ -1,11 +1,12 @@
 import path from "path";
 import s3 from "./YandexBucketInit";
+import GetPathToOperativeFolder from "../../shared/GetPathToOperative";
 
 
 export let UploadImage = async (image_name: string) => {
     let upload = await s3.Upload(
         {
-            path: path.resolve(__dirname, './../', 'operative', image_name),
+            path: GetPathToOperativeFolder() + image_name,
             save_name: true
         },
         '/images/'

@@ -1,12 +1,11 @@
 import dotenv from 'dotenv'
 import app from './app'
 import DBconnect from './DataFlow/database/DBconnect';
-import path from "path";
 
 dotenv.config()
 
 const start = () => {
-    let PORT = process.env.PORT
+    let PORT = process.env.PORT || 3000
     try {
         DBconnect()
         

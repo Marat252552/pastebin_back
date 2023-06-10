@@ -8,7 +8,7 @@ const app_1 = __importDefault(require("./app"));
 const DBconnect_1 = __importDefault(require("./DataFlow/database/DBconnect"));
 dotenv_1.default.config();
 const start = () => {
-    let PORT = process.env.PORT;
+    let PORT = process.env.PORT || 3000;
     try {
         (0, DBconnect_1.default)();
         app_1.default.listen(PORT, () => {

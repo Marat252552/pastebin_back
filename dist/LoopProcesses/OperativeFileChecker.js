@@ -12,11 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const path_1 = __importDefault(require("path"));
 const OperativeFile_1 = __importDefault(require("../DataFlow/database/Models/OperativeFile"));
 const fs_1 = __importDefault(require("fs"));
-let TEN_MINUTES = 600000;
-let TEN_SECONDS = 10000;
+const GetPathToOperative_1 = __importDefault(require("../shared/GetPathToOperative"));
+const TimePeriods_1 = require("../shared/TimePeriods");
 const OperativeFilesChecker = () => {
     setInterval(() => __awaiter(void 0, void 0, void 0, function* () {
         try {
@@ -26,22 +25,27 @@ const OperativeFilesChecker = () => {
             files.forEach((file) => __awaiter(void 0, void 0, void 0, function* () {
                 let { _id, exp_timestamp, file_name } = file;
                 if (exp_timestamp <= Date.now()) {
-                    yield OperativeFile_1.default.deleteOne({ _id });
-                    fs_1.default.unlink(path_1.default.resolve(__dirname, './', 'operative', file_name), (err) => {
+                    fs_1.default.unlink((0, GetPathToOperative_1.default)() + file_name, (err) => __awaiter(void 0, void 0, void 0, function* () {
                         if (err) {
                             console.log('error while deleting from operative');
                             console.log(err);
                         }
                         else {
-                            console.log("Delete File successfully.");
+                            try {
+                                yield OperativeFile_1.default.deleteOne({ _id });
+                                console.log('operative file deleted successfully');
+                            }
+                            catch (e) {
+                                console.log(e);
+                            }
                         }
-                    });
+                    }));
                 }
             }));
         }
         catch (e) {
             console.log(e);
         }
-    }), TEN_MINUTES);
+    }), TimePeriods_1.TEN_MINUTES);
 };
 exports.default = OperativeFilesChecker;

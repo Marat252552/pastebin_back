@@ -1,8 +1,7 @@
 import PinModel from "../DataFlow/database/Models/PinModel"
 import { Pin_T } from "../shared/types"
 import { DeleteFile } from "../DataFlow/yandex_files/Actions" 
-
-let TEN_MINUTES = 600000
+import { TEN_MINUTES } from "../shared/TimePeriods"
 
 const AutoPinsDeleter = () => {
     setInterval(async () => {
@@ -28,6 +27,7 @@ const AutoPinsDeleter = () => {
             }
 
         } catch(e) {
+            console.log('AutoPinsDeleter Error')
             console.log(e)
         }
     }, TEN_MINUTES)

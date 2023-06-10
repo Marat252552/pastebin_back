@@ -13,11 +13,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeleteFile = exports.UploadImage = void 0;
-const path_1 = __importDefault(require("path"));
 const YandexBucketInit_1 = __importDefault(require("./YandexBucketInit"));
+const GetPathToOperative_1 = __importDefault(require("../../shared/GetPathToOperative"));
 let UploadImage = (image_name) => __awaiter(void 0, void 0, void 0, function* () {
     let upload = yield YandexBucketInit_1.default.Upload({
-        path: path_1.default.resolve(__dirname, './../', 'operative', image_name),
+        path: (0, GetPathToOperative_1.default)() + image_name,
         save_name: true
     }, '/images/');
     return upload;
