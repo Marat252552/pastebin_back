@@ -1,5 +1,5 @@
 import path from "path"
-import FileModel from "../../database/Models/OperativeFile"
+import OperativeFileModel from "../../DataFlow/database/Models/OperativeFile"
 import { UploadFileReq_T } from "./types"
 import { v4 } from "uuid"
 
@@ -24,7 +24,7 @@ class Controller {
 
             let file_name = v4() + '.' + file.mimetype.split('/')[1]
 
-            await FileModel.create({
+            await OperativeFileModel.create({
                 file_name, exp_timestamp, session_id, uid
             })
 

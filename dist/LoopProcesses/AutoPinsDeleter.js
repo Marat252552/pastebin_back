@@ -19,8 +19,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const PinModel_1 = __importDefault(require("./DataFlow/database/Models/PinModel"));
-const Actions_1 = require("./DataFlow/yandex_files/Actions");
+const PinModel_1 = __importDefault(require("../DataFlow/database/Models/PinModel"));
+const Actions_1 = require("../DataFlow/yandex_files/Actions");
 let TEN_MINUTES = 600000;
 const AutoPinsDeleter = () => {
     setInterval(() => __awaiter(void 0, void 0, void 0, function* () {

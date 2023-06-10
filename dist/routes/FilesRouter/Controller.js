@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = __importDefault(require("path"));
-const OperativeFile_1 = __importDefault(require("../../database/Models/OperativeFile"));
+const OperativeFile_1 = __importDefault(require("../../DataFlow/database/Models/OperativeFile"));
 const uuid_1 = require("uuid");
 class Controller {
     uploadFile(req, res) {

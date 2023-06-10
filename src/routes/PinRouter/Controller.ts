@@ -1,7 +1,7 @@
-import PinModel from "../../database/Models/PinModel"
+import PinModel from "../../DataFlow/database/Models/PinModel"
 import { CreatePinReq_T, GetPinReq_T } from "./types"
-import OperativeFileModel from "../../database/Models/OperativeFile"
-import { DeleteFile, UploadImage } from "../../yandex_files/Actions"
+import OperativeFileModel from "../../DataFlow/database/Models/OperativeFile"
+import { DeleteFile, UploadImage } from "../../DataFlow/yandex_files/Actions"
 import { UploadFile_T } from "../../shared/types"
 
 

@@ -1,6 +1,6 @@
-import PinModel from "./database/Models/PinModel"
-import { Pin_T } from "./shared/types"
-import { DeleteFile } from "./yandex_files/Actions"
+import PinModel from "../DataFlow/database/Models/PinModel"
+import { Pin_T } from "../shared/types"
+import { DeleteFile } from "../DataFlow/yandex_files/Actions" 
 
 let TEN_MINUTES = 600000
 

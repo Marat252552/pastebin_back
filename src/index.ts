@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import app from './app'
-import DBconnect from './database/DBconnect'
+import DBconnect from './DataFlow/database/DBconnect';
 import path from "path";
 
 dotenv.config()

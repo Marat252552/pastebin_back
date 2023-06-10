@@ -1,5 +1,5 @@
 import path from "path"
-import OperativeFileModel from "./database/Models/OperativeFile"
+import OperativeFileModel from "../DataFlow/database/Models/OperativeFile"
 import fs from 'fs'
 
 let TEN_MINUTES = 600000

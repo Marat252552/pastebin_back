@@ -3,10 +3,10 @@ import fileUpload from 'express-fileupload'
 import cors from 'cors'
 import GetFilesRouter from './routes/FilesRouter/GetFilesRouter'
 import bodyParser from 'body-parser'
-import OperativeFilesChecker from './OperativeFileChecker'
+import OperativeFilesChecker from './LoopProcesses/OperativeFileChecker'
 import GetPinsRouter from './routes/PinRouter/GetPinsRouter'
 import path from 'path'
-import AutoPinsDeleter from './AutoPinsDeleter'
+import AutoPinsDeleter from './LoopProcesses/AutoPinsDeleter'
 
 
 const jsonBodyMiddleware = express.json()

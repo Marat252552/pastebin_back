@@ -19,9 +19,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const PinModel_1 = __importDefault(require("../../database/Models/PinModel"));
-const OperativeFile_1 = __importDefault(require("../../database/Models/OperativeFile"));
-const Actions_1 = require("../../yandex_files/Actions");
+const PinModel_1 = __importDefault(require("../../DataFlow/database/Models/PinModel"));
+const OperativeFile_1 = __importDefault(require("../../DataFlow/database/Models/OperativeFile"));
+const Actions_1 = require("../../DataFlow/yandex_files/Actions");
 class Controller {
     createPin(req, res) {
         var _a, e_1, _b, _c;

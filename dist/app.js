@@ -7,9 +7,9 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const GetFilesRouter_1 = __importDefault(require("./routes/FilesRouter/GetFilesRouter"));
 const body_parser_1 = __importDefault(require("body-parser"));
-const OperativeFileChecker_1 = __importDefault(require("./OperativeFileChecker"));
+const OperativeFileChecker_1 = __importDefault(require("./LoopProcesses/OperativeFileChecker"));
 const GetPinsRouter_1 = __importDefault(require("./routes/PinRouter/GetPinsRouter"));
-const AutoPinsDeleter_1 = __importDefault(require("./AutoPinsDeleter"));
+const AutoPinsDeleter_1 = __importDefault(require("./LoopProcesses/AutoPinsDeleter"));
 const jsonBodyMiddleware = express_1.default.json();
 const app = (0, express_1.default)();
 // app.use(fileUpload({}))
