@@ -12,35 +12,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const OperativeFile_1 = __importDefault(require("../DataFlow/database/Models/OperativeFile"));
-const fs_1 = __importDefault(require("fs"));
-const GetPathToOperative_1 = __importDefault(require("../shared/GetPathToOperative"));
-const TimePeriods_1 = require("../shared/TimePeriods");
-const OperativeFilesChecker = () => {
+const OperativeFileModel_1 = __importDefault(require("../../DataFlow/mongo_database/Models/OperativeFileModel"));
+const TimePeriods_1 = require("../../shared/TimePeriods");
+const DeleteFileFromOperativeFolder_1 = __importDefault(require("./processes/DeleteFileFromOperativeFolder"));
+const DeleteFileFromMongoDatabaseById_1 = __importDefault(require("./processes/DeleteFileFromMongoDatabaseById"));
+const OperativeFilesCleaner = () => {
     setInterval(() => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            let files = yield OperativeFile_1.default.find();
+            let files = yield OperativeFileModel_1.default.find();
             if (!files)
                 return;
             files.forEach((file) => __awaiter(void 0, void 0, void 0, function* () {
                 let { _id, expiresAt, file_name } = file;
                 if (+expiresAt <= Date.now()) {
-                    fs_1.default.unlink((0, GetPathToOperative_1.default)() + file_name, (err) => __awaiter(void 0, void 0, void 0, function* () {
-                        if (err) {
-                            console.log('error while deleting from operative');
-                            console.log(err);
-                        }
-                        else {
-                        }
-                    }));
-                    try {
-                        yield OperativeFile_1.default.deleteOne({ _id });
-                        console.log('operative file deleted successfully from DB');
-                    }
-                    catch (e) {
-                        console.log('operative file deleting from DB error');
-                        console.log(e);
-                    }
+                    yield (0, DeleteFileFromOperativeFolder_1.default)(file_name);
+                    yield (0, DeleteFileFromMongoDatabaseById_1.default)(_id.toString());
                 }
             }));
         }
@@ -49,4 +35,4 @@ const OperativeFilesChecker = () => {
         }
     }), TimePeriods_1.TEN_MINUTES);
 };
-exports.default = OperativeFilesChecker;
+exports.default = OperativeFilesCleaner;

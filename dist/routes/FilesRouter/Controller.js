@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const OperativeFile_1 = __importDefault(require("../../DataFlow/database/Models/OperativeFile"));
+const OperativeFileModel_1 = __importDefault(require("../../DataFlow/mongo_database/Models/OperativeFileModel"));
 const uuid_1 = require("uuid");
 const GetPathToOperative_1 = __importDefault(require("../../shared/GetPathToOperative"));
 const TimePeriods_1 = require("../../shared/TimePeriods");
@@ -28,7 +28,7 @@ class Controller {
                 // Time in future when this file should be auto deleted if not used
                 let expiresAt = Date.now() + TimePeriods_1.ONE_HOUR;
                 let file_name = (0, uuid_1.v4)() + '.' + file.mimetype.split('/')[1];
-                yield OperativeFile_1.default.create({
+                yield OperativeFileModel_1.default.create({
                     file_name, expiresAt, session_id, uid
                 });
                 file.mv((0, GetPathToOperative_1.default)() + file_name);

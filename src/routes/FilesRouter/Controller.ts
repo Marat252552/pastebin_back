@@ -1,5 +1,4 @@
-import path from "path"
-import OperativeFileModel from "../../DataFlow/database/Models/OperativeFile"
+import OperativeFileModel from "../../DataFlow/mongo_database/Models/OperativeFileModel"
 import { UploadFileReq_T } from "./types"
 import { v4 } from "uuid"
 import GetPathToOperativeFolder from "../../shared/GetPathToOperative"

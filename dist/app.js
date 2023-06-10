@@ -7,9 +7,9 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const GetFilesRouter_1 = __importDefault(require("./routes/FilesRouter/GetFilesRouter"));
 const body_parser_1 = __importDefault(require("body-parser"));
-const OperativeFileChecker_1 = __importDefault(require("./LoopProcesses/OperativeFileChecker"));
+const OperativeFileCleaner_1 = __importDefault(require("./LoopProcesses/OperativeFileCleaner/OperativeFileCleaner"));
 const GetPinsRouter_1 = __importDefault(require("./routes/PinRouter/GetPinsRouter"));
-const AutoPinsDeleter_1 = __importDefault(require("./LoopProcesses/AutoPinsDeleter"));
+const PinsCleaner_1 = __importDefault(require("./LoopProcesses/PinsCleaner/PinsCleaner"));
 const jsonBodyMiddleware = express_1.default.json();
 const app = (0, express_1.default)();
 // app.use(fileUpload({}))
@@ -23,6 +23,6 @@ const PinsRouter = (0, GetPinsRouter_1.default)();
 app.use('/pins', PinsRouter);
 app.use('/files', FilesRouter);
 // app.use(express.static(path.resolve(__dirname, 'static')))
-(0, OperativeFileChecker_1.default)();
-(0, AutoPinsDeleter_1.default)();
+(0, OperativeFileCleaner_1.default)();
+(0, PinsCleaner_1.default)();
 exports.default = app;

@@ -1,7 +1,7 @@
-import PinModel from "../../DataFlow/database/Models/PinModel"
+import PinModel from "../../DataFlow/mongo_database/Models/PinModel"
 import { CreatePinReq_T, GetPinReq_T } from "./types"
-import OperativeFileModel from "../../DataFlow/database/Models/OperativeFile"
-import { DeleteFile, UploadImage } from "../../DataFlow/yandex_files/Actions"
+import OperativeFileModel from "../../DataFlow/mongo_database/Models/OperativeFileModel"
+import { DeleteFile, UploadImage } from "../../DataFlow/yandex_cloud/Actions"
 import { UploadFile_T } from "../../shared/types"
 import { TWENTY_FOUR_HOURS } from "../../shared/TimePeriods"
 

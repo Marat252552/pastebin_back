@@ -19,9 +19,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const PinModel_1 = __importDefault(require("../../DataFlow/database/Models/PinModel"));
-const OperativeFile_1 = __importDefault(require("../../DataFlow/database/Models/OperativeFile"));
-const Actions_1 = require("../../DataFlow/yandex_files/Actions");
+const PinModel_1 = __importDefault(require("../../DataFlow/mongo_database/Models/PinModel"));
+const OperativeFileModel_1 = __importDefault(require("../../DataFlow/mongo_database/Models/OperativeFileModel"));
+const Actions_1 = require("../../DataFlow/yandex_cloud/Actions");
 const TimePeriods_1 = require("../../shared/TimePeriods");
 class Controller {
     createPin(req, res) {
@@ -32,7 +32,7 @@ class Controller {
                 if (!text || !title || title.length > 20 || text.length > 200 || !session_id || days_alive > 100) {
                     return res.sendStatus(400);
                 }
-                let files = yield OperativeFile_1.default.find({ session_id });
+                let files = yield OperativeFileModel_1.default.find({ session_id });
                 let images = [];
                 if (files[0]) {
                     try {

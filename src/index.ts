@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import app from './app'
-import DBconnect from './DataFlow/database/DBconnect';
+import DBconnect from './DataFlow/mongo_database/DBconnect'
 
 dotenv.config()
 

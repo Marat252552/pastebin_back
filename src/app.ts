@@ -1,12 +1,10 @@
 import express from 'express'
-import fileUpload from 'express-fileupload'
 import cors from 'cors'
 import GetFilesRouter from './routes/FilesRouter/GetFilesRouter'
 import bodyParser from 'body-parser'
-import OperativeFilesChecker from './LoopProcesses/OperativeFileChecker'
+import OperativeFilesCleaner from './LoopProcesses/OperativeFileCleaner/OperativeFileCleaner'
 import GetPinsRouter from './routes/PinRouter/GetPinsRouter'
-import path from 'path'
-import AutoPinsDeleter from './LoopProcesses/AutoPinsDeleter'
+import PinsCleaner from './LoopProcesses/PinsCleaner/PinsCleaner'
 
 
 const jsonBodyMiddleware = express.json()
@@ -29,7 +27,7 @@ app.use('/files', FilesRouter)
 // app.use(express.static(path.resolve(__dirname, 'static')))
 
 
-OperativeFilesChecker()
-AutoPinsDeleter()
+OperativeFilesCleaner()
+PinsCleaner()
 
 export default app
