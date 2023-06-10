@@ -3,7 +3,7 @@ import OperativeFileModel from "../../DataFlow/database/Models/OperativeFile"
 import { UploadFileReq_T } from "./types"
 import { v4 } from "uuid"
 import GetPathToOperativeFolder from "../../shared/GetPathToOperative"
-import { TEN_SECONDS } from "../../shared/TimePeriods"
+import { ONE_HOUR, TEN_MINUTES, TEN_SECONDS } from "../../shared/TimePeriods"
 
 
 class Controller {
@@ -17,12 +17,12 @@ class Controller {
             }
 
             // Time in future when this file should be auto deleted if not used
-            let exp_timestamp = Date.now() + TEN_SECONDS
+            let expiresAt = Date.now() + ONE_HOUR
 
             let file_name = v4() + '.' + file.mimetype.split('/')[1]
 
             await OperativeFileModel.create({
-                file_name, exp_timestamp, session_id, uid
+                file_name, expiresAt, session_id, uid
             })
 
             file.mv(GetPathToOperativeFolder() + file_name)

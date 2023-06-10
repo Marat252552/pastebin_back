@@ -12,21 +12,22 @@ const Pin = new mongoose_1.Schema({
     images: [Image],
     one_read: { type: Boolean, default: false },
     createdAt: { type: Date, default: () => Date.now() },
-    views: { type: Number, default: 0 }
+    views: { type: Number, default: 0 },
+    expiresAt: { type: Date }
 });
-let TWENTY_FOUR_HOURS = 86400000;
-let TEN_MINUTES = 600000;
+// Find pins that 1. are not for one_read only and 2. they are already expired according to their days_alive and createdAt values
 Pin.statics.findExpired = function () {
     let getCurrentDate = () => {
         return Date.now();
     };
-    return this.where('createdAt').lt(getCurrentDate() - TWENTY_FOUR_HOURS);
+    // 'expiresAt' date is lower than 'now' date
+    return this.where('expiresAt').lt(getCurrentDate());
 };
 Pin.statics.addView = function (_id) {
     return this.updateOne({ _id }, { $inc: { 'views': 1 } });
 };
 // Find those pins that are created for one read only and already been watched at least 1 time
-Pin.statics.findDisposed = function (_id) {
+Pin.statics.findDisposed = function () {
     return this.where('one_read').equals(true).where('views').gt(0);
 };
 const PinModel = (0, mongoose_1.model)('pin', Pin);

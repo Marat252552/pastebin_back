@@ -26,10 +26,10 @@ class Controller {
                     return res.status(413).json({ message: 'Размер файла не может быть больше 2х Мбайт' });
                 }
                 // Time in future when this file should be auto deleted if not used
-                let exp_timestamp = Date.now() + TimePeriods_1.TEN_SECONDS;
+                let expiresAt = Date.now() + TimePeriods_1.ONE_HOUR;
                 let file_name = (0, uuid_1.v4)() + '.' + file.mimetype.split('/')[1];
                 yield OperativeFile_1.default.create({
-                    file_name, exp_timestamp, session_id, uid
+                    file_name, expiresAt, session_id, uid
                 });
                 file.mv((0, GetPathToOperative_1.default)() + file_name);
                 res.sendStatus(200);

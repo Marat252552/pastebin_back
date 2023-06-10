@@ -22,13 +22,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const PinModel_1 = __importDefault(require("../../DataFlow/database/Models/PinModel"));
 const OperativeFile_1 = __importDefault(require("../../DataFlow/database/Models/OperativeFile"));
 const Actions_1 = require("../../DataFlow/yandex_files/Actions");
+const TimePeriods_1 = require("../../shared/TimePeriods");
 class Controller {
     createPin(req, res) {
         var _a, e_1, _b, _c;
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { files_UIDs, text, session_id, title, one_read } = req.body;
-                if (!text || !title || title.length > 20 || text.length > 200 || !session_id) {
+                const { files_UIDs, text, session_id, title, one_read, days_alive = 100 } = req.body;
+                if (!text || !title || title.length > 20 || text.length > 200 || !session_id || days_alive > 100) {
                     return res.sendStatus(400);
                 }
                 let files = yield OperativeFile_1.default.find({ session_id });
@@ -56,10 +57,10 @@ class Controller {
                         finally { if (e_1) throw e_1.error; }
                     }
                 }
-                let pin = yield PinModel_1.default.create({ images, text, title, one_read });
-                // let link = process.env.FRONT_URL + '/view/' + pin._id
+                let days_in_timestamp_format = days_alive * TimePeriods_1.TWENTY_FOUR_HOURS;
+                let expiresAt = Date.now() + days_in_timestamp_format;
+                let pin = yield PinModel_1.default.create({ images, text, title, one_read, expiresAt });
                 res.status(200).json({
-                    // link,
                     pin_id: pin._id
                 });
             }

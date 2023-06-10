@@ -4,7 +4,8 @@ export type CreatePinReq_T = {
         text: string,
         session_id: string,
         title: string,
-        one_read: boolean
+        one_read: boolean,
+        days_alive: number
     }
 }
 

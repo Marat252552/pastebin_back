@@ -23,23 +23,24 @@ const OperativeFilesChecker = () => {
             if (!files)
                 return;
             files.forEach((file) => __awaiter(void 0, void 0, void 0, function* () {
-                let { _id, exp_timestamp, file_name } = file;
-                if (exp_timestamp <= Date.now()) {
+                let { _id, expiresAt, file_name } = file;
+                if (+expiresAt <= Date.now()) {
                     fs_1.default.unlink((0, GetPathToOperative_1.default)() + file_name, (err) => __awaiter(void 0, void 0, void 0, function* () {
                         if (err) {
                             console.log('error while deleting from operative');
                             console.log(err);
                         }
                         else {
-                            try {
-                                yield OperativeFile_1.default.deleteOne({ _id });
-                                console.log('operative file deleted successfully');
-                            }
-                            catch (e) {
-                                console.log(e);
-                            }
                         }
                     }));
+                    try {
+                        yield OperativeFile_1.default.deleteOne({ _id });
+                        console.log('operative file deleted successfully from DB');
+                    }
+                    catch (e) {
+                        console.log('operative file deleting from DB error');
+                        console.log(e);
+                    }
                 }
             }));
         }
