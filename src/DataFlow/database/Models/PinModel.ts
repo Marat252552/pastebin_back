@@ -41,7 +41,7 @@ const Pin = new Schema<Pin_T, PinModel_T>({
     one_read: {type: Boolean, default: false},
     createdAt: {type: Date, default: () => Date.now()},
     views: {type: Number, default: 0},
-    expiresAt: {type: Date}
+    expiresAt: {type: Date, required: true}
 })
 
 // Find pins that 1. are not for one_read only and 2. they are already expired according to their days_alive and createdAt values
