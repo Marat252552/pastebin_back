@@ -11,8 +11,10 @@ class Controller {
             let { file } = req.files
             let { session_id, uid } = req.body
 
-            if (file.size > 2000000) {
-                return res.status(413).json({ message: 'Размер файла не может быть больше 2х Мбайт' })
+            console.log('file upload session_id', session_id)
+
+            if (file.size > 4000000) {
+                return res.status(413).json({ message: 'Размер файла не может быть больше 4х Мбайт' })
             }
 
             // Time in future when this file should be auto deleted if not used

@@ -4,13 +4,20 @@ import OperativeFileModel from "../../DataFlow/mongo_database/Models/OperativeFi
 import { DeleteFile, UploadImage } from "../../DataFlow/yandex_cloud/Actions"
 import { UploadFile_T } from "../../shared/types"
 import { TWENTY_FOUR_HOURS } from "../../shared/TimePeriods"
+import verifyCaptchaAPI from "../../shared/VerifyCaptchaAPI"
 
 
 class Controller {
     async createPin(req: CreatePinReq_T, res: any) {
         try {
-            const { files_UIDs, text, session_id, title, one_read, days_alive = 100 } = req.body
-            if (!text || !title || title.length > 20 || text.length > 200 || !session_id || days_alive > 100) {
+            const { captcha, files_UIDs, text, session_id, title, one_read, days_alive = 100 } = req.body
+            if (!text || !captcha|| !title || title.length > 20 || text.length > 200 || !session_id || days_alive > 100) {
+                return res.sendStatus(400)
+            }
+            console.log('session_id create pin', session_id)
+            console.log(files_UIDs)
+            let data = await verifyCaptchaAPI(captcha)
+            if(!data.success) {
                 return res.sendStatus(400)
             }
 
@@ -18,6 +25,7 @@ class Controller {
 
             let images = []
 
+            console.log(files)
             if (files[0]) {
                 for await (const file of files) {
                     let { file_name, uid } = file

@@ -23,17 +23,25 @@ const PinModel_1 = __importDefault(require("../../DataFlow/mongo_database/Models
 const OperativeFileModel_1 = __importDefault(require("../../DataFlow/mongo_database/Models/OperativeFileModel"));
 const Actions_1 = require("../../DataFlow/yandex_cloud/Actions");
 const TimePeriods_1 = require("../../shared/TimePeriods");
+const VerifyCaptchaAPI_1 = __importDefault(require("../../shared/VerifyCaptchaAPI"));
 class Controller {
     createPin(req, res) {
         var _a, e_1, _b, _c;
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { files_UIDs, text, session_id, title, one_read, days_alive = 100 } = req.body;
-                if (!text || !title || title.length > 20 || text.length > 200 || !session_id || days_alive > 100) {
+                const { captcha, files_UIDs, text, session_id, title, one_read, days_alive = 100 } = req.body;
+                if (!text || !captcha || !title || title.length > 20 || text.length > 200 || !session_id || days_alive > 100) {
+                    return res.sendStatus(400);
+                }
+                console.log('session_id create pin', session_id);
+                console.log(files_UIDs);
+                let data = yield (0, VerifyCaptchaAPI_1.default)(captcha);
+                if (!data.success) {
                     return res.sendStatus(400);
                 }
                 let files = yield OperativeFileModel_1.default.find({ session_id });
                 let images = [];
+                console.log(files);
                 if (files[0]) {
                     try {
                         for (var _d = true, files_1 = __asyncValues(files), files_1_1; files_1_1 = yield files_1.next(), _a = files_1_1.done, !_a; _d = true) {
