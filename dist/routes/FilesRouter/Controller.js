@@ -16,14 +16,16 @@ const OperativeFileModel_1 = __importDefault(require("../../DataFlow/mongo_datab
 const uuid_1 = require("uuid");
 const GetPathToOperative_1 = __importDefault(require("../../shared/GetPathToOperative"));
 const TimePeriods_1 = require("../../shared/TimePeriods");
+const FOUR_MEGABYTES = 4000000;
 class Controller {
     uploadFile(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let { file } = req.files;
                 let { session_id, uid } = req.body;
-                console.log('file upload session_id', session_id);
-                if (file.size > 4000000) {
+                if (!session_id || !uid || !file)
+                    return res.sendStatus(400);
+                if (file.size > FOUR_MEGABYTES) {
                     return res.status(413).json({ message: 'Размер файла не может быть больше 4х Мбайт' });
                 }
                 // Time in future when this file should be auto deleted if not used
