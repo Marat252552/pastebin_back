@@ -10,7 +10,7 @@ import verifyCaptchaAPI from "../../shared/VerifyCaptchaAPI"
 class Controller {
     async createPin(req: CreatePinReq_T, res: any) {
         try {
-            const { captcha, files_UIDs, text, session_id, title, one_read, days_alive = 100 } = req.body
+            let { captcha, files_UIDs, text, session_id, title, one_read, days_alive = 100 } = req.body
             if (!text || !captcha|| !title || title.length > 20 || text.length > 200 || !session_id || days_alive > 100) {
                 return res.sendStatus(400)
             }
@@ -39,6 +39,11 @@ class Controller {
                         images.push(image)
                     }
                 }
+            }
+
+            if(typeof days_alive !== 'number') {
+                console.log('converted to numbher')
+                days_alive = 100
             }
 
             let days_in_timestamp_format = days_alive * TWENTY_FOUR_HOURS
